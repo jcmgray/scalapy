@@ -95,7 +95,10 @@ if scalapackversion == 'intelmkl':
     scl_libdir = [os.environ['MKLROOT']+'/lib/intel64' if 'MKLROOT' in os.environ else '']
 elif scalapackversion == 'netlib':
     scl_lib = ['scalapack', 'gfortran']
-    scl_libdir = [ os.path.dirname(runcommand('gfortran -print-file-name=libgfortran.a')) ]
+    try:
+        scl_libdir = [os.environ['SCALAPACK_DIR']]
+    except KeyError:
+        scl_libdir = [ os.path.dirname(runcommand('gfortran -print-file-name=libgfortran.a')) ]
 else:
     raise Exception("Scalapack distribution unsupported. Please modify setup.py manually.")
 
